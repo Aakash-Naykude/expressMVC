@@ -1,22 +1,34 @@
 const express = require("express");
 const router = express.Router();
 const Evaluation = require("../models/evaluation.model");
-router.post("", async (req, res) => {
-  try {
-    const user = await Evaluation.create(req.body);
-    return res.status(201).send(user);
-  } catch (e) {
-    return res.status(500).send({ message: e.message, status: "Failed" });
-  }
-});
-router.get("", async (req, res) => {
-  try {
-    const user = await Evaluation.find().populate("instuctor_id").lean().exec();
-    return res.status(201).send(user);
-  } catch (e) {
-    return res.status(500).send({ message: e.message, status: "Failed" });
-  }
-});
+const crudController = require("./crud.controller")
+router.post("", crudController.post(Evaluation))
+
+//below there is next level of refractoring we can do it in differnt pages
+
+
+
+// router.post("", async (req, res) => {
+//   try {
+//     const user = await Evaluation.create(req.body);
+//     return res.status(201).send(user);
+//   } catch (e) {
+//     return res.status(500).send({ message: e.message, status: "Failed" });
+//   }
+// });
+
+router.get("", crudController.get(Evaluation))
+
+
+
+// router.get("", async (req, res) => {
+//   try {
+//     const user = await Evaluation.find().populate("instuctor_id").lean().exec();
+//     return res.status(201).send(user);
+//   } catch (e) {
+//     return res.status(500).send({ message: e.message, status: "Failed" });
+//   }
+// });
 router.get("/:id", async (req, res) => {
   try {
     const user = await Evaluation.findById(req.params.id).lean().exec();

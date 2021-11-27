@@ -1,14 +1,20 @@
 const express = require("express");
 const router = express.Router();
 const Student = require("../models/student.model");
-router.post("", async (req, res) => {
-  try {
-    const user = await Student.create(req.body);
-    return res.status(201).send(user);
-  } catch (e) {
-    return res.status(500).send({ message: e.message, status: "Failed" });
-  }
-});
+
+const crudController = require("./crud.controller")
+router.post("", crudController.post(Student))
+
+
+
+// router.post("", async (req, res) => {
+//   try {
+//     const user = await Student.create(req.body);
+//     return res.status(201).send(user);
+//   } catch (e) {
+//     return res.status(500).send({ message: e.message, status: "Failed" });
+//   }
+// });
 router.get("", async (req, res) => {
   try {
     const user = await Student.find().populate("user_id").lean().exec();
